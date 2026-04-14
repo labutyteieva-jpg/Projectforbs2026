@@ -490,6 +490,6 @@ def main():
     args = parser.parse_args()
     analyze_air_quality(args.input_csv, args.output_name)
 
-
+# -- RUN AUTOMATICALLY
 if __name__ == "__main__":
     main()
