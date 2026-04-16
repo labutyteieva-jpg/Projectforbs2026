@@ -24,6 +24,7 @@ aiohttp = "*"
 awkward-pandas = "*"
 pandas-datareader = ">=0.10.0,<0.11"
 xrootd = ">=5.9.2,<6"
+pytest = ">=8.0,<9"
 
 [activation.env]
 PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION = "python"

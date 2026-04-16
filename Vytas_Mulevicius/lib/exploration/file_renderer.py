@@ -2,8 +2,8 @@ import os
 import urllib.request
 import pandas as pd
 import streamlit as st
-from scripts.download_data import download_single_file
-from scripts.exploration.cern_api import format_size
+from lib.download_data import download_single_file
+from lib.exploration.cern_api import format_size
 
 
 def render_csv_files(compatible, rec_id, is_active):

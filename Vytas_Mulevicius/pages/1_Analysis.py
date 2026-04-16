@@ -1,15 +1,15 @@
 import streamlit as st
 import os
-from scripts.download_data import get_datasets, download_dataset
-from scripts.ui_utils import apply_branding
-from scripts.exploration.inspect_root import get_root_structure, get_branch_details
-from scripts.analysis.dataset_metadata import get_metadata, build_file_options
-from scripts.analysis.data_loader import load_data
-from scripts.analysis.column_mapper import map_columns
-from scripts.analysis.filters import apply_kinematic_filters
-from scripts.analysis.plots.mass_histogram import render_mass_histogram
-from scripts.analysis.plots.event_display_3d import render_3d_event_display
-from scripts.analysis.plots.event_animation_3d import render_3d_animation
+from lib.download_data import get_datasets, download_dataset
+from lib.ui_utils import apply_branding
+from lib.exploration.inspect_root import get_root_structure, get_branch_details
+from lib.analysis.dataset_metadata import get_metadata, build_file_options
+from lib.analysis.data_loader import load_data
+from lib.analysis.column_mapper import map_columns
+from lib.analysis.filters import apply_kinematic_filters
+from lib.analysis.plots.mass_histogram import render_mass_histogram
+from lib.analysis.plots.event_display_3d import render_3d_event_display
+from lib.analysis.plots.event_animation_3d import render_3d_animation
 
 st.set_page_config(page_title="CERN Explorer | Analysis", page_icon="⚛️", layout="wide")
 apply_branding()

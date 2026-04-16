@@ -1,7 +1,7 @@
 import streamlit as st
-from scripts.ui_utils import apply_branding
-from scripts.exploration.cern_api import get_cern_data, QUICK_PICKS
-from scripts.exploration.file_renderer import render_csv_files, render_root_files
+from lib.ui_utils import apply_branding
+from lib.exploration.cern_api import get_cern_data, QUICK_PICKS
+from lib.exploration.file_renderer import render_csv_files, render_root_files
 
 st.set_page_config(page_title="CERN Explorer | Portal", page_icon="⚛️", layout="wide")
 apply_branding()

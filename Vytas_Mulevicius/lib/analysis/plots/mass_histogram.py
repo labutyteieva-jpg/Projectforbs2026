@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
-from scripts.analysis.plot_mass import generate_publication_plot
+from lib.analysis.plot_mass import generate_publication_plot
 
 
 def render_mass_histogram(filtered_df, particle_name, expected_mass, mass_range, bins, mass_label):

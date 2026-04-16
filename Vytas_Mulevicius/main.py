@@ -1,5 +1,5 @@
 import streamlit as st
-from scripts.ui_utils import apply_branding
+from lib.ui_utils import apply_branding
 
 st.set_page_config(
     page_title="CERN Explorer | Home",

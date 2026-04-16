@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 from scripts.davinci_macros.make_ntuple import generate_davinci_config
-from scripts.ui_utils import apply_branding
+from lib.ui_utils import apply_branding
 
 st.set_page_config(page_title="CERN Explorer | Macros", page_icon="⚛️", layout="wide")
 

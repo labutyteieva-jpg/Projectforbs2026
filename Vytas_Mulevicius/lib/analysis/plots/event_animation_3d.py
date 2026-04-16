@@ -1,6 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
-from scripts.analysis.plots.event_display_3d import _add_cylinder
+from lib.analysis.plots.event_display_3d import _add_cylinder
 
 
 def render_3d_animation(filtered_df, particle_name):
