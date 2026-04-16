@@ -1,7 +1,7 @@
 import json
 import pytest
 from unittest.mock import patch, MagicMock
-from lib.exploration.cern_api import format_size, QUICK_PICKS
+from lib.exploration.cern_api import format_size, QUICK_PICKS, get_cern_data
 
 
 # ---------------------------------------------------------------------------
@@ -73,8 +73,6 @@ class TestQuickPicks:
 def _make_urlopen_mock(payload: dict):
     mock_resp = MagicMock()
     mock_resp.read.return_value = json.dumps(payload).encode('utf-8')
-    mock_resp.__enter__ = MagicMock(return_value=mock_resp)
-    mock_resp.__exit__ = MagicMock(return_value=False)
     return mock_resp
 
 
@@ -82,7 +80,6 @@ class TestGetCernData:
     def test_returns_parsed_json_on_success(self):
         fake = {"hits": {"hits": [], "total": 0}}
         with patch('urllib.request.urlopen', return_value=_make_urlopen_mock(fake)):
-            from lib.exploration.cern_api import get_cern_data
             result = get_cern_data("unique_query_success_1", only_csv=False)
         assert result == fake
 
@@ -95,7 +92,6 @@ class TestGetCernData:
             return _make_urlopen_mock(fake)
 
         with patch('urllib.request.urlopen', side_effect=fake_urlopen):
-            from lib.exploration.cern_api import get_cern_data
             get_cern_data("unique_query_csv_filter", only_csv=True)
 
         assert "file_format:CSV" in captured_url[0]
@@ -109,14 +105,12 @@ class TestGetCernData:
             return _make_urlopen_mock(fake)
 
         with patch('urllib.request.urlopen', side_effect=fake_urlopen):
-            from lib.exploration.cern_api import get_cern_data
             get_cern_data("unique_query_no_csv_filter", only_csv=False)
 
         assert "file_format:CSV" not in captured_url[0]
 
     def test_returns_error_dict_on_network_failure(self):
         with patch('urllib.request.urlopen', side_effect=Exception("connection refused")):
-            from lib.exploration.cern_api import get_cern_data
             result = get_cern_data("unique_query_failure_1", only_csv=False)
         assert "error" in result
         assert "connection refused" in result["error"]
@@ -130,7 +124,6 @@ class TestGetCernData:
             return _make_urlopen_mock(fake)
 
         with patch('urllib.request.urlopen', side_effect=fake_urlopen):
-            from lib.exploration.cern_api import get_cern_data
             get_cern_data("Run 2011 dimuon", only_csv=False)
 
         assert "Run+2011+dimuon" in captured_url[0]
