@@ -2,7 +2,7 @@ import streamlit as st
 import polars as pl
 
 
-def map_columns(df):
+def map_columns(df: pl.DataFrame) -> pl.DataFrame:
     """
     Detects experiment format (LHCb, ATLAS, CMS) and normalizes columns.
     Returns a DataFrame with standardized columns including 'Calculated_M'.
@@ -23,7 +23,7 @@ def map_columns(df):
     return df
 
 
-def _map_lhcb(df, cols):
+def _map_lhcb(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
     st.info("💡 **Format Detected:** LHCb NTuple. Mapping particle branches...")
     with st.spinner("Refactoring LHCb columnar data..."):
         mapping = {
@@ -72,7 +72,7 @@ def _map_lhcb(df, cols):
     return df
 
 
-def _map_atlas(df, cols):
+def _map_atlas(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
     with st.spinner("Extracting ATLAS leptons and converting MeV -> GeV..."):
         df = df.with_columns([
             (pl.col('lep_pt').list.get(0) / 1000.0).alias('pt1'),
@@ -101,7 +101,7 @@ def _map_atlas(df, cols):
     return df
 
 
-def _compute_invariant_mass(df, cols):
+def _compute_invariant_mass(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
     if 'E1' in cols and 'px1' in cols:
         df = df.with_columns([
             (pl.col('E1') + pl.col('E2')).alias('E_tot'),

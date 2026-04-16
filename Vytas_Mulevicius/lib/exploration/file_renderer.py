@@ -3,10 +3,16 @@ import urllib.request
 import pandas as pd
 import streamlit as st
 from lib.download_data import download_single_file
-from lib.exploration.cern_api import format_size
+from lib.exploration.cern_api import CernFileInfo, format_size
 
 
-def render_csv_files(compatible, rec_id, is_active):
+def render_csv_files(compatible: list[CernFileInfo], rec_id: str | int, is_active: bool) -> None:
+    """
+    Renders a list of CSV files from a CERN Open Data record.
+
+    Each file row shows Preview / Stream / Fetch buttons. is_active controls whether
+    the inline data preview panel expands beneath the currently selected file.
+    """
     st.info(f"📊 Found {len(compatible)} compatible data files:")
     for f in compatible:
         fname = f.get('key')
@@ -29,7 +35,8 @@ def render_csv_files(compatible, rec_id, is_active):
             _render_preview_content()
 
 
-def render_root_files(root_files, rec_id):
+def render_root_files(root_files: list[CernFileInfo], rec_id: str | int) -> None:
+    """Renders ROOT/DST files from a CERN record with Peek / Stream / Fetch / XRootD buttons."""
     st.divider()
     st.markdown("⚛️ **ROOT/DST Files Detected**")
     st.caption("These files contain complex physics objects. You can 'Peek' to see their internal structure.")
@@ -63,7 +70,7 @@ def render_root_files(root_files, rec_id):
 
 # --- Internal helpers ---
 
-def _handle_preview(rec_id, fname, furl):
+def _handle_preview(rec_id: str | int, fname: str, furl: str) -> None:
     st.session_state.active_preview_id = rec_id
     st.session_state.active_preview_fname = fname
     try:
@@ -78,12 +85,12 @@ def _handle_preview(rec_id, fname, furl):
         st.session_state.preview_error = str(e)
 
 
-def _stream_to_analysis(url):
+def _stream_to_analysis(url: str) -> None:
     st.session_state.stream_url = url
     st.session_state.nav_to_analysis = True
 
 
-def _render_fetch_button(fname, furl, key):
+def _render_fetch_button(fname: str, furl: str, key: str) -> None:
     if os.path.exists(os.path.join('data', fname)):
         st.button("✅ Stored", key=key, disabled=True)
     else:
@@ -94,7 +101,7 @@ def _render_fetch_button(fname, furl, key):
             st.rerun()
 
 
-def _render_preview_content():
+def _render_preview_content() -> None:
     st.markdown("### 👁️ Data Preview")
     if 'preview_error' in st.session_state:
         st.error(st.session_state.preview_error)
@@ -105,7 +112,7 @@ def _render_preview_content():
         st.code(st.session_state.preview_content, language='text')
 
 
-def _peek_root_file(furl, fname, rec_id):
+def _peek_root_file(furl: str, fname: str, rec_id: str | int) -> None:
     try:
         import uproot
         with st.spinner("Analyzing remote ROOT header..."):
@@ -119,7 +126,7 @@ def _peek_root_file(furl, fname, rec_id):
         st.info("💡 **Tip:** This large file might require a local download for full inspection.")
 
 
-def _render_root_tree_inspector(furl, rec_id, fname):
+def _render_root_tree_inspector(furl: str, rec_id: str | int, fname: str) -> None:
     with st.container():
         st.markdown("---")
         st.write("**Found Trees/Directories:**")

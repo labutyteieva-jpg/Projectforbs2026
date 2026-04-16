@@ -38,9 +38,9 @@ else:
 
 # --- Metadata ---
 is_root = selected_file.lower().split('?')[0].endswith('.root') or selected_file.startswith('root://')
-default_min, default_max, expected_mass, particle_name = get_metadata(selected_file)
+meta = get_metadata(selected_file)
 
-st.title(f"{particle_name} Physical Analysis")
+st.title(f"{meta.particle_name} Physical Analysis")
 if data_source == "Remote Stream (XRootD/HTTP)":
     st.caption(f"🌐 Streaming from: `{selected_file}`")
 st.markdown(
@@ -80,8 +80,8 @@ st.sidebar.header("Plot Settings")
 bins = st.sidebar.slider("Number of Bins", min_value=10, max_value=500, value=200, step=10)
 mass_range = st.sidebar.slider(
     "Invariant mass range [GeV/c²]",
-    min_value=float(default_min - 10), max_value=float(default_max + 10),
-    value=(default_min, default_max), step=0.1,
+    min_value=float(meta.mass_min - 10), max_value=float(meta.mass_max + 10),
+    value=(meta.mass_min, meta.mass_max), step=0.1,
 )
 st.sidebar.header("Kinematic Cuts")
 pt_min = st.sidebar.slider("Minimum Muon pT [GeV/c]", 0.0, 50.0, 0.0, 0.5)
@@ -130,11 +130,11 @@ with st.expander("🔍 Data Diagnostic Inspect", expanded=False):
 view_mode = st.radio("Select View:", ["Mass Histogram", "3D Event Display", "3D Event Animation"])
 
 if view_mode == "Mass Histogram":
-    render_mass_histogram(filtered_df, particle_name, expected_mass, mass_range, bins, mass_label)
+    render_mass_histogram(filtered_df, meta.particle_name, meta.expected_mass, mass_range, bins, mass_label)
 elif view_mode == "3D Event Display":
-    render_3d_event_display(filtered_df, particle_name)
+    render_3d_event_display(filtered_df, meta.particle_name)
 elif view_mode == "3D Event Animation":
-    render_3d_animation(filtered_df, particle_name)
+    render_3d_animation(filtered_df, meta.particle_name)
 
 # --- Raw Data Preview ---
 st.subheader("Raw data preview")

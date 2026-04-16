@@ -1,7 +1,21 @@
 import polars as pl
 
 
-def apply_kinematic_filters(df, mass_range, pt_min, eta_max, require_opposite_charge):
+def apply_kinematic_filters(
+    df: pl.DataFrame,
+    mass_range: tuple[float, float],
+    pt_min: float,
+    eta_max: float,
+    require_opposite_charge: bool,
+) -> pl.DataFrame:
+    """
+    Applies sequential kinematic cuts to a standardized Polars DataFrame.
+
+    mass_range is an inclusive window on 'Calculated_M'. pt_min and eta_max apply
+    to pt1/pt2 and eta1/eta2 (dimuon events) or single pt/eta (W-like single-lepton
+    events). eta is compared as absolute value. The opposite-charge cut is silently
+    skipped when Q1/Q2 columns are absent.
+    """
     cols = df.columns
 
     filter_exprs = [

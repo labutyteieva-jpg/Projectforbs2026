@@ -1,10 +1,26 @@
+import io
+import pandas as pd
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 from lib.analysis.plot_mass import generate_publication_plot
 
 
-def render_mass_histogram(filtered_df, particle_name, expected_mass, mass_range, bins, mass_label):
+def render_mass_histogram(
+    filtered_df: pd.DataFrame,
+    particle_name: str,
+    expected_mass: float,
+    mass_range: tuple[float, float],
+    bins: int,
+    mass_label: str,
+) -> None:
+    """
+    Renders an interactive Plotly mass histogram with a dashed PDG reference line.
+
+    mass_label controls the axis title and hover text: use 'Invariant Mass' for
+    dimuon events or 'Transverse Mass ($M_T$)' for single-lepton + MET events.
+    Also renders a publication export button backed by generate_publication_plot().
+    """
     st.subheader(f"Invariant Mass Distribution ({particle_name} → μμ)")
 
     counts, bin_edges = np.histogram(filtered_df['Calculated_M'], bins=bins, range=mass_range)

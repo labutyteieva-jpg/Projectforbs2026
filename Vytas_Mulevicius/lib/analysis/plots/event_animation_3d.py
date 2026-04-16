@@ -1,9 +1,16 @@
+import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 from lib.analysis.plots.event_display_3d import _add_cylinder
 
 
-def render_3d_animation(filtered_df, particle_name):
+def render_3d_animation(filtered_df: pd.DataFrame, particle_name: str) -> None:
+    """
+    Renders a Plotly 3D animation cycling through multiple collision events.
+
+    Each frame updates the muon momentum vectors and the reconstructed parent boost.
+    The number of events to animate is controlled by an inline slider (10–100).
+    """
     st.subheader("3D Animation of Multiple Events")
     st.markdown("Watch how the kinematics of the collision change event by event natively in Streamlit!")
 

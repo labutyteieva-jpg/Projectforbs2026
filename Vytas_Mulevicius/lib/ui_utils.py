@@ -2,13 +2,14 @@ import streamlit as st
 import os
 from pathlib import Path
 
-def get_shared_styles():
+
+def get_shared_styles() -> str:
     """Returns the CSS string for the dashboard layout tweaks."""
     return """
         <style>
         /* Base styles */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        
+
         html, body, [class*="css"] {
             font-family: 'Inter', sans-serif;
         }
@@ -17,7 +18,7 @@ def get_shared_styles():
         [data-testid="stSidebarNav"] ul {
             padding-top: 1rem;
         }
-        
+
         [data-testid="stSidebarNav"] li {
             margin-bottom: 5px;
             border-radius: 8px;
@@ -38,7 +39,7 @@ def get_shared_styles():
             font-weight: 800 !important;
             letter-spacing: -0.02em;
         }
-        
+
         h2, h3 {
             font-weight: 600 !important;
         }
@@ -49,16 +50,17 @@ def get_shared_styles():
             font-weight: 600;
             transition: transform 0.1s ease;
         }
-        
+
         .stButton>button:active {
             transform: scale(0.98);
         }
         </style>
     """
 
-def apply_branding():
+
+def apply_branding() -> None:
     """
-    Applies shared branding, CSS, and sidebar elements in a single pass 
+    Applies shared branding, CSS, and sidebar elements in a single pass
     to reduce visual flickering during page transitions.
     """
     # 1. Inject CSS early
@@ -74,19 +76,19 @@ def apply_branding():
             st.image(str(logo_path), width='stretch')
         else:
             st.title("⚛️ CERN Explorer")
-        
+
         st.markdown("---")
-        
+
         # System Status
         st.caption("🛰️ System Status: **Optimal**")
         st.caption("📦 Cache Health: **Ready**")
-        
+
         st.markdown("---")
-        
+
         # Footer
         st.markdown("""
             <div style='text-align: center; opacity: 0.7; font-size: 0.8em;'>
-                🚀 Developed by <br> 
+                🚀 Developed by <br>
                 <a href='https://github.com/VytasMule' target='_blank' style='color: #00d4ff; text-decoration: none; font-weight: 800;'>Vytas Mulevicius</a> <br>
                 <p style='margin-top: 5px;'>© 2026 CERN Open Data </p>
             </div>

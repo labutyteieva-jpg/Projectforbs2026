@@ -1,9 +1,17 @@
+import pandas as pd
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 
 
-def render_3d_event_display(filtered_df, particle_name):
+def render_3d_event_display(filtered_df: pd.DataFrame, particle_name: str) -> None:
+    """
+    Renders a single collision event as 3D momentum vectors in a Plotly scene.
+
+    Draws muon 1 (blue), muon 2 (red), and the reconstructed parent boost vector
+    (green dashed). A translucent grey cylinder represents the CMS barrel detector
+    conceptually. Physics metrics (mass, opening angle, pair pT) are shown below.
+    """
     st.subheader("3D Momentum Visualization")
     st.markdown("View the 3D momentum vectors ($p_x, p_y, p_z$) of the two muons for a single physical event.")
 
@@ -76,7 +84,7 @@ def render_3d_event_display(filtered_df, particle_name):
     st.info("💡 **How to interpret:** The green dashed vector shows the momentum of the parent particle before decay (boost). The grey cylinder is a conceptual representation of the CMS inner detector. If the Pair $p_T$ is large, the rest of the event must have a large recoiling transverse momentum (origin of MET signatures).")
 
 
-def _add_cylinder(fig, max_p):
+def _add_cylinder(fig: go.Figure, max_p: float) -> None:
     theta = np.linspace(0, 2 * np.pi, 50)
     z_cyl = np.linspace(-max_p * 1.2, max_p * 1.2, 2)
     theta_grid, z_grid = np.meshgrid(theta, z_cyl)

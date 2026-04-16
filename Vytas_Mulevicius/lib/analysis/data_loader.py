@@ -3,7 +3,15 @@ import polars as pl
 
 
 @st.cache_data
-def load_data(path):
+def load_data(path: str) -> pl.DataFrame:
+    """
+    Loads a CSV or ROOT file into a Polars DataFrame.
+
+    Accepts local paths (.csv, .root), HTTP URLs, and XRootD paths starting with
+    'root://'. ROOT files are opened via uproot; the first tree whose name contains
+    'Events', 'DecayTree', 'mini', or 'tree' is selected, then converted to Polars
+    via Arrow. Calls st.stop() on unrecognized formats.
+    """
     if path.lower().split('?')[0].endswith('.csv'):
         return pl.read_csv(path)
 
